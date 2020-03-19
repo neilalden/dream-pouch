@@ -1,5 +1,6 @@
 package com.example.test
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -58,9 +59,9 @@ class newproduct : AppCompatActivity() {
             productType.setText("")
             productName.setText("")
             specfic.setText("")
-            productPrice.setText("");
+            productPrice.setText("")
+            val intent = Intent(this,home::class.java)
+            startActivity(intent)
         }
-
-
     }
 }
