@@ -11,59 +11,70 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.ui.database.FirebaseListAdapter;
+import com.firebase.ui.database.FirebaseListOptions;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 public class home extends AppCompatActivity {
+    FirebaseListAdapter adapter;
     ListView myListView;
     FirebaseDatabase database;
     DatabaseReference myRef;
-    ArrayList<String> myArrayList;
-    ArrayAdapter<String>myArrayAdapter;
     Product product;
-    String x;
+    public static String globalstring;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
         product = new Product();
         myListView = findViewById(R.id.listview);
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("products");
-        myArrayList = new ArrayList<>();
-        myArrayAdapter = new ArrayAdapter<String>(this,R.layout.product_info,R.id.productInfo,myArrayList);
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot ds: dataSnapshot.getChildren()){
-                    product = ds.getValue(Product.class);
-                    myArrayList.add(product.getName().toString()+" "+product.getSpecs().toString());
-                    x = product.getSpecs().toString();
-                }
-                myListView.setAdapter(myArrayAdapter);
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
 
+
+        Query query = FirebaseDatabase.getInstance().getReference().child("products");
+        FirebaseListOptions<Product> options = new FirebaseListOptions.Builder<Product>()
+                .setLayout(R.layout.product_info)
+                .setQuery(query, Product.class)
+                .build();
+        adapter = new FirebaseListAdapter(options) {
+            @Override
+            protected void populateView(@NonNull View v, @NonNull Object model, int position) {
+                TextView productName = v.findViewById(R.id.productName);
+                TextView productSpecs = v.findViewById(R.id.productSpecs);
+                Product prd = (Product)model;
+                productName.setText(prd.getName());
+                productSpecs.setText(prd.getSpecs());
             }
-        });
+        };
+        myListView.setAdapter(adapter);
+
+
+
         myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(home.this,x +" cliced!",Toast.LENGTH_SHORT).show();
-
+                Intent intent = new Intent(home.this, productpage.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                globalstring = ((TextView)view.findViewById(R.id.productSpecs)).getText().toString();
             }
         });
-
         Button login = findViewById(R.id.button);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,5 +83,17 @@ public class home extends AppCompatActivity {
                 startActivity(i);
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        adapter.stopListening();
     }
 }
