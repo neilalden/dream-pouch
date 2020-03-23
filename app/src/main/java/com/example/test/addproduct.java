@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContentResolverCompat;
+import androidx.core.content.ContextCompat;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -103,7 +104,7 @@ public class addproduct extends AppCompatActivity {
                         public void run() {
                             pb.setProgress(0);
                         }
-                    }, 500);
+                    }, 5000);
 
                     ETproducttype = findViewById(R.id.product_type);
                     ETproductname = findViewById(R.id.product_name);
@@ -159,7 +160,7 @@ public class addproduct extends AppCompatActivity {
                     ETproductname.setText("");
                     ETspecs.setText("");
                     ETprice.setText("");
-                    mImageview.setImageDrawable(null);
+                    mImageview.setImageDrawable(ContextCompat.getDrawable(addproduct.this, R.drawable.image));
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override

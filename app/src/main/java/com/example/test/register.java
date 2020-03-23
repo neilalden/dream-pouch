@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -35,6 +36,8 @@ public class register extends AppCompatActivity implements View.OnClickListener 
         pb = findViewById(R.id.progressBar);
         findViewById(R.id.register).setOnClickListener(this);
         findViewById(R.id.login).setOnClickListener(this);
+        Button btn = findViewById(R.id.login);
+        btn.setPaintFlags(btn.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
     }
     public void registerUser(){
 
