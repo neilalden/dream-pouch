@@ -65,10 +65,15 @@ public class register extends AppCompatActivity implements View.OnClickListener 
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-                    Intent i = new Intent(register.this, home.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(i);
-                    Toast.makeText(register.this, "User registered", Toast.LENGTH_SHORT).show();
+                    try{
+
+                        Intent i = new Intent(register.this, home.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(i);
+                        Toast.makeText(register.this, "User registered", Toast.LENGTH_SHORT).show();
+                    }catch (Exception e){
+                        Toast.makeText(register.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 }
                 else{
                     if(task.getException() instanceof FirebaseAuthUserCollisionException){

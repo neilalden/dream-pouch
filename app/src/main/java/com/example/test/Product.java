@@ -5,19 +5,29 @@ public class Product {
     private String type;
     private String name;
     private String specs;
-    private int price;
+    private String image;
+    private float price;
     private int stocks;
 
     public Product() {
     }
 
-    public Product(String id, String type, String name, String specs, int price, int stocks) {
+    public Product(String id, String type, String name, String specs, float price, int stocks, String image) {
         this.id = id;
         this.type = type;
         this.name = name;
         this.specs = specs;
         this.price = price;
         this.stocks = stocks;
+        this.image = image;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getId() {
@@ -52,11 +62,11 @@ public class Product {
         this.specs = specs;
     }
 
-    public int getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 
