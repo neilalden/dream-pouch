@@ -19,7 +19,7 @@ public class cart extends AppCompatActivity {
         btnproductlist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(cart.this, products_sell_list_view.class);
+                Intent intent = new Intent(cart.this, sellListView.class);
                 startActivity(intent);
             }
         });

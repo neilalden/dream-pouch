@@ -2,6 +2,7 @@ package com.example.test;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -62,12 +63,14 @@ public class home extends AppCompatActivity {
                 productName.setText(prd.getName());
                 productSpecs.setText(prd.getSpecs());
                 productStock.setText("Stocks remaining: "+prd.getStocks());
-
-                Glide.with(home.this)
-                        .load(prd.getImage())
-                        .into(img);
-
-
+                if(prd.getImage() == null){
+                    img.setImageDrawable(ContextCompat.getDrawable(home.this, R.drawable.image));
+                }
+                else {
+                    Glide.with(home.this)
+                            .load(prd.getImage())
+                            .into(img);
+                }
             }
         };
         myListView.setAdapter(adapter);
@@ -77,7 +80,7 @@ public class home extends AppCompatActivity {
         myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(home.this, productpage.class);
+                Intent intent = new Intent(home.this, sellProductView.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 globalstring = ((TextView)view.findViewById(R.id.productSpecs)).getText().toString();

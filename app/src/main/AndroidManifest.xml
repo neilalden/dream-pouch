@@ -12,11 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".sellListView"></activity>
+        <activity android:name=".sellProductView"></activity>
+        <activity android:name=".sellListView" />
         <activity android:name=".cart" />
         <activity android:name=".dashboard" />
         <activity android:name=".addproduct" />
-        <activity android:name=".productpage" />
         <activity android:name=".home" />
         <activity android:name=".register" />
         <activity android:name=".MainActivity">
