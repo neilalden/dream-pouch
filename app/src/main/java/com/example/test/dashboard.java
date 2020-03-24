@@ -19,7 +19,7 @@ public class dashboard extends AppCompatActivity {
         btnsell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(dashboard.this,home.class);
+                Intent i = new Intent(dashboard.this,cart.class);
                 startActivity(i);
             }
         });
