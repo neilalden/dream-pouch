@@ -15,6 +15,14 @@ public class dashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
         btnregister = findViewById(R.id.btn_register);
+        btnsell = findViewById(R.id.btn_sell);
+        btnsell.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(dashboard.this,home.class);
+                startActivity(i);
+            }
+        });
         btnregister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

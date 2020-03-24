@@ -43,6 +43,7 @@ public class addproduct extends AppCompatActivity {
     private Uri mImageUri;
     private StorageReference mStorageRef;
     private DatabaseReference mdatabase;
+    String downloadUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +105,7 @@ public class addproduct extends AppCompatActivity {
                         public void run() {
                             pb.setProgress(0);
                         }
-                    }, 5000);
+                    }, 500);
 
                     ETproducttype = findViewById(R.id.product_type);
                     ETproductname = findViewById(R.id.product_name);
@@ -148,8 +149,8 @@ public class addproduct extends AppCompatActivity {
                         @Override
                         public void onSuccess(Uri uri) {
 
-                            final String downloadUrl = uri.toString();
-                            Product upload = new Product(id,type,name, finalSpecs, finalPrice,stocks, downloadUrl.toString() );
+                            downloadUrl = uri.toString();
+                            Product upload = new Product(id,type,name, finalSpecs, finalPrice,stocks, downloadUrl );
 
                             String uploadID = mdatabase.push().getKey();
                             mdatabase.child(uploadID).setValue(upload);
@@ -161,6 +162,7 @@ public class addproduct extends AppCompatActivity {
                     ETspecs.setText("");
                     ETprice.setText("");
                     mImageview.setImageDrawable(ContextCompat.getDrawable(addproduct.this, R.drawable.image));
+                    pb.setVisibility(View.INVISIBLE);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -170,8 +172,7 @@ public class addproduct extends AppCompatActivity {
             }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                    double prog = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                    pb.setProgress((int)prog);
+
                 }
             });
         }
