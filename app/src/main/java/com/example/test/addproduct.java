@@ -152,8 +152,7 @@ public class addproduct extends AppCompatActivity {
                             downloadUrl = uri.toString();
                             Product upload = new Product(id,type,name, finalSpecs, finalPrice,stocks, downloadUrl );
 
-                            String uploadID = mdatabase.push().getKey();
-                            mdatabase.child(uploadID).setValue(upload);
+                            mdatabase.child(id).setValue(upload);
                         }
                     });
                     Toast.makeText(addproduct.this, "saved!", Toast.LENGTH_SHORT).show();

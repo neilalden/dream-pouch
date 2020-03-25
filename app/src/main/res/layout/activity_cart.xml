@@ -14,10 +14,11 @@
     tools:context=".cart">
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/customerName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:autoText="false"
         android:ems="10"
         android:hint="Customer name"
         android:inputType="textPersonName"
@@ -36,11 +37,11 @@
         android:textColor="#f788ee"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintTop_toBottomOf="@+id/customerName" />
 
     <Button
-        android:id="@+id/button3"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:id="@+id/btn_checkout"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
@@ -60,7 +61,7 @@
         android:layout_marginBottom="8dp"
         android:maxHeight="400dp"
         android:minHeight="100dp"
-        app:layout_constraintBottom_toTopOf="@+id/button3"
+        app:layout_constraintBottom_toTopOf="@+id/btn_checkout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/product_list" />

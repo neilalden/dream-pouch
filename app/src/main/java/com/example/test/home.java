@@ -58,10 +58,12 @@ public class home extends AppCompatActivity {
                 TextView productName = v.findViewById(R.id.productName);
                 TextView productSpecs = v.findViewById(R.id.productSpecs);
                 TextView productStock = v.findViewById(R.id.productStock);
+                TextView id = v.findViewById(R.id.productId);
                 ImageView img = v.findViewById(R.id.product_image);
                 Product prd = (Product)model;
                 productName.setText(prd.getName());
                 productSpecs.setText(prd.getSpecs());
+                id.setText(prd.getId());
                 productStock.setText("Stocks remaining: "+prd.getStocks());
                 if(prd.getImage() == null){
                     img.setImageDrawable(ContextCompat.getDrawable(home.this, R.drawable.image));
@@ -83,7 +85,7 @@ public class home extends AppCompatActivity {
                 Intent intent = new Intent(home.this, sellProductView.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
-                globalstring = ((TextView)view.findViewById(R.id.productSpecs)).getText().toString();
+                globalstring = ((TextView)view.findViewById(R.id.productId)).getText().toString();
             }
         });
         Button login = findViewById(R.id.button);

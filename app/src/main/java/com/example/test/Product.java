@@ -1,13 +1,13 @@
 package com.example.test;
 
 public class Product {
-    private String id;
-    private String type;
-    private String name;
-    private String specs;
-    private String image;
-    private float price;
-    private int stocks;
+    public String id;
+    public String type;
+    public String name;
+    public String specs;
+    public String image;
+    public float price;
+    public int stocks;
 
     public Product() {
     }
