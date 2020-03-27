@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 
@@ -40,5 +41,22 @@ public class dashboard extends AppCompatActivity {
         });
         btndelete = findViewById(R.id.btn_delete);
         btndelete.setPaintFlags(btndelete.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+    }
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            event.startTracking();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
+                && !event.isCanceled()) {
+            this.finishAffinity();
+            return true;
+        }
+        return super.onKeyUp(keyCode, event);
     }
 }

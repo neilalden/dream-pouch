@@ -13,16 +13,27 @@
     android:layout_height="match_parent"
     tools:context=".cart">
 
-    <EditText
-        android:id="@+id/customerName"
+    <TextView
+        android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="16dp"
+        android:text="date"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/ETcustomername"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:autoText="false"
         android:ems="10"
         android:hint="Customer name"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:inputType="textNoSuggestions|textPersonName"
+        app:layout_constraintEnd_toStartOf="@+id/date"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,7 +48,7 @@
         android:textColor="#f788ee"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/customerName" />
+        app:layout_constraintTop_toBottomOf="@+id/ETcustomername" />
 
     <Button
         android:id="@+id/btn_checkout"
