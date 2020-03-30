@@ -13,11 +13,24 @@
     android:layout_height="match_parent"
     tools:context=".cart">
 
+    <Button
+        android:id="@+id/btn_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:drawableLeft="@drawable/back"
+        android:paddingLeft="4dp"
+        android:text="back"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:text="date"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
@@ -26,16 +39,16 @@
 
     <EditText
         android:id="@+id/ETcustomername"
-        android:layout_width="200dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
         android:ems="10"
         android:hint="Customer name"
         android:inputType="textNoSuggestions|textPersonName"
-        app:layout_constraintEnd_toStartOf="@+id/date"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_back" />
 
     <Button
         android:id="@+id/product_list"
@@ -62,10 +75,10 @@
         android:textColor="#000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/listview" />
+        app:layout_constraintTop_toBottomOf="@id/cartlistview" />
 
     <ListView
-        android:id="@+id/listview"
+        android:id="@+id/cartlistview"
         android:layout_width="wrap_content"
         android:layout_height="400dp"
         android:layout_marginTop="8dp"

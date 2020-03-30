@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -14,7 +13,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseListAdapter;
@@ -24,10 +22,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 
 import java.net.InetAddress;
-import java.net.URI;
 
 public class home extends AppCompatActivity {
     FirebaseListAdapter adapter;
@@ -49,7 +45,7 @@ public class home extends AppCompatActivity {
 
         isInternetAvailable();
         product = new Product();
-        myListView = findViewById(R.id.listview);
+        myListView = findViewById(R.id.cartlistview);
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("products");
         mStorageRef = FirebaseStorage.getInstance().getReference("products");
@@ -65,7 +61,7 @@ public class home extends AppCompatActivity {
                 TextView productSpecs = v.findViewById(R.id.productSpecs);
                 TextView productStock = v.findViewById(R.id.productStock);
                 TextView id = v.findViewById(R.id.productId);
-                ImageView img = v.findViewById(R.id.product_image);
+                ImageView img = v.findViewById(R.id.productImage);
                 Product prd = (Product)model;
                 productName.setText(prd.getName());
                 productSpecs.setText(prd.getSpecs());

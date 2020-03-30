@@ -3,13 +3,10 @@ package com.example.test;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContentResolverCompat;
 import androidx.core.content.ContextCompat;
 
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,7 +20,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -31,8 +27,6 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
-
-import java.net.URI;
 
 public class addproduct extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
@@ -52,7 +46,7 @@ public class addproduct extends AppCompatActivity {
         chooseimage = findViewById(R.id.btn_choose_img);
         btnsave = findViewById(R.id.btn_enter);
         pb = findViewById(R.id.progressBar);
-        mImageview = findViewById(R.id.product_image);
+        mImageview = findViewById(R.id.productImage);
         mStorageRef = FirebaseStorage.getInstance().getReference("products");
         mdatabase = FirebaseDatabase.getInstance().getReference("products");
 

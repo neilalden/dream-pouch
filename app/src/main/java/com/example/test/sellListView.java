@@ -8,11 +8,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseListAdapter;
@@ -31,7 +29,7 @@ public class sellListView extends AppCompatActivity {
     DatabaseReference myRef;
     Product product;
     StorageReference mStorageRef;
-    public static String globalstring;
+    public static String globalstring, crtName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +37,9 @@ public class sellListView extends AppCompatActivity {
 
 
         product = new Product();
-        myListView = findViewById(R.id.listview);
+        cart crt = new cart();
+        crtName = crt.customerName;
+        myListView = findViewById(R.id.cartlistview);
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("products");
         mStorageRef = FirebaseStorage.getInstance().getReference("products");
@@ -55,7 +55,7 @@ public class sellListView extends AppCompatActivity {
                 TextView productSpecs = v.findViewById(R.id.productSpecs);
                 TextView productStock = v.findViewById(R.id.productStock);
                 TextView id = v.findViewById(R.id.productId);
-                ImageView img = v.findViewById(R.id.product_image);
+                ImageView img = v.findViewById(R.id.productImage);
                 Product prd = (Product)model;
                 productName.setText(prd.getName());
                 productSpecs.setText(prd.getSpecs());

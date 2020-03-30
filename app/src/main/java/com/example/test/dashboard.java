@@ -54,7 +54,7 @@ public class dashboard extends AppCompatActivity {
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
                 && !event.isCanceled()) {
-            this.finishAffinity();
+            System.exit(0);
             return true;
         }
         return super.onKeyUp(keyCode, event);

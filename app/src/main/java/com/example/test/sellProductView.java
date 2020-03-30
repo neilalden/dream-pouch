@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,11 +29,11 @@ import java.util.Locale;
 import java.util.Map;
 
 public class sellProductView extends AppCompatActivity {
-    String strRef, strAmount, strCustomerName, strName, strSpecs, strimage, dt;
+    String strRef, strCustomerName, strName, strSpecs, strimage, dt;
     String customerID;
     int stck, amnt;
     TextView tvname, tvspecs, tvstock, tvdate;
-    EditText amount;
+    ElegantNumberButton amount;
     Button back,cart;
     ImageView image;
     Product prd;
@@ -99,10 +100,9 @@ public class sellProductView extends AppCompatActivity {
         cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                strAmount = amount.getText().toString();
+                amnt = Integer.parseInt( amount.getNumber());
                 try{
-                    amnt = Integer.parseInt(strAmount);
-                    if(strAmount.isEmpty()||amnt==0){
+                    if(amnt==0){
                         Toast.makeText(sellProductView.this, "no amount entered",Toast.LENGTH_SHORT).show();
                     }
                     else{

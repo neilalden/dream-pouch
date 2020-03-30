@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ScrollView01"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:scrollbarStyle="outsideOverlay"
+    android:fillViewport="true" >
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".sellProductView">
@@ -25,7 +32,7 @@
         android:layout_marginTop="8dp"
         android:drawableLeft="@drawable/back"
         android:paddingLeft="4dp"
-        android:text="back to products"
+        android:text="back"
         android:textAllCaps="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -73,24 +80,26 @@
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/product_name" />
 
-    <EditText
+    <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
         android:id="@+id/amount"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
-        android:ems="10"
-        android:inputType="number"
-        android:text="0"
+        android:layout_weight="1"
+        app:backGroundColor="@color/colorAccent"
+        app:finalNumber="999"
+        app:initialNumber="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/product_stocks" />
+        app:layout_constraintTop_toBottomOf="@+id/product_stocks"
+        app:textSize="10dp" />
 
     <Button
         android:id="@+id/btn_to_cart"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="64dp"
         android:background="@color/colorPrimary"
         android:text="Add to cart"
         android:textAllCaps="false"
@@ -99,3 +108,4 @@
         app:layout_constraintTop_toBottomOf="@+id/amount" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

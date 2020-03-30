@@ -38,12 +38,12 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:text="dashboard"
-        app:layout_constraintBottom_toTopOf="@+id/listview"
+        app:layout_constraintBottom_toTopOf="@+id/cartlistview"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
-        android:id="@+id/listview"
+        android:id="@+id/cartlistview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
