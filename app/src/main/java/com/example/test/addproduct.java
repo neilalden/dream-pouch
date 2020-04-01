@@ -46,7 +46,7 @@ public class addproduct extends AppCompatActivity {
         chooseimage = findViewById(R.id.btn_choose_img);
         btnsave = findViewById(R.id.btn_enter);
         pb = findViewById(R.id.progressBar);
-        mImageview = findViewById(R.id.productImage);
+        mImageview = findViewById(R.id.product_image);
         mStorageRef = FirebaseStorage.getInstance().getReference("products");
         mdatabase = FirebaseDatabase.getInstance().getReference("products");
 

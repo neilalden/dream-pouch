@@ -37,6 +37,7 @@ public class sellListView extends AppCompatActivity {
 
 
         product = new Product();
+
         cart crt = new cart();
         crtName = crt.customerName;
         myListView = findViewById(R.id.cartlistview);
@@ -55,7 +56,7 @@ public class sellListView extends AppCompatActivity {
                 TextView productSpecs = v.findViewById(R.id.productSpecs);
                 TextView productStock = v.findViewById(R.id.productStock);
                 TextView id = v.findViewById(R.id.productId);
-                ImageView img = v.findViewById(R.id.productImage);
+                ImageView img = v.findViewById(R.id.product_image);
                 Product prd = (Product)model;
                 productName.setText(prd.getName());
                 productSpecs.setText(prd.getSpecs());
