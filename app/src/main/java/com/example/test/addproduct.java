@@ -36,7 +36,7 @@ public class addproduct extends AppCompatActivity {
     private ProgressBar pb;
     private Uri mImageUri;
     private StorageReference mStorageRef;
-    private DatabaseReference mdatabase;
+    private DatabaseReference mdatabase, sref;
     String downloadUrl;
 
     @Override
@@ -144,7 +144,8 @@ public class addproduct extends AppCompatActivity {
                         public void onSuccess(Uri uri) {
 
                             downloadUrl = uri.toString();
-                            Product upload = new Product(id,type,name, finalSpecs, finalPrice,stocks, downloadUrl );
+                            Product upload = new Product(id,type,name, finalSpecs, finalPrice,stocks, downloadUrl);
+                            sref = FirebaseDatabase.getInstance().getReference("sales");
 
                             mdatabase.child(id).setValue(upload);
                         }

@@ -74,9 +74,9 @@ public class cart extends AppCompatActivity {
         if(currentBuyer != null){
             editTextCustomerName.setText(currentBuyer);
         }
-            btnproductlist.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
+        btnproductlist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 customerName = editTextCustomerName.getText().toString();
                 if (customerName.isEmpty()){
                     editTextCustomerName.setError("name is required");
@@ -95,79 +95,79 @@ public class cart extends AppCompatActivity {
                     Intent i = new Intent(cart.this, sellListView.class);
                     startActivity(i);
                 }
-                    }
-            });
+            }
+        });
 
-            myRef = database.getReference("customerSales/"+ultimateID);
-            mStorageRef = FirebaseStorage.getInstance().getReference("products");
-            Query query = FirebaseDatabase.getInstance().getReference().child("customerSales/"+ultimateID);
-            FirebaseListOptions<CustomerSale> options = new FirebaseListOptions.Builder<CustomerSale>()
-                    .setLayout(R.layout.cart_list)
-                    .setQuery(query, CustomerSale.class)
-                    .build();
-            adapter = new FirebaseListAdapter(options) {
-                @Override
-                protected void populateView(@NonNull View v, @NonNull Object model, int position) {
-                    TextView productName = v.findViewById(R.id.productName);
-                    TextView productSpecs = v.findViewById(R.id.productSpecs);
-                    ImageView img = v.findViewById(R.id.product_image);
-                    ElegantNumberButton num = v.findViewById(R.id.amount);
-                    final CustomerSale cs = (CustomerSale) model;
-                    productName.setText(cs.getProductname());
-                    productSpecs.setText(cs.getProductspecs());
-                    num.setNumber(String.valueOf(cs.getAmount()));
-                    if(cs.getImage() == null){
-                        img.setImageDrawable(ContextCompat.getDrawable(cart.this, R.drawable.image));
-                    }
-                    else {
-                        Glide.with(cart.this)
-                                .load(cs.getImage())
-                                .into(img);
-                    }
-                    Button del = v.findViewById(R.id.button2);
-                    del.setOnClickListener(new View.OnClickListener() {
-
-                        @Override
-                        public void onClick(View arg0) {
-                            myRef.child(cs.getId()).removeValue();
-                        }
-                    });
-
+        myRef = database.getReference("customerSales/"+ultimateID);
+        mStorageRef = FirebaseStorage.getInstance().getReference("products");
+        Query query = FirebaseDatabase.getInstance().getReference().child("customerSales/"+ultimateID);
+        FirebaseListOptions<CustomerSale> options = new FirebaseListOptions.Builder<CustomerSale>()
+                .setLayout(R.layout.cart_list)
+                .setQuery(query, CustomerSale.class)
+                .build();
+        adapter = new FirebaseListAdapter(options) {
+            @Override
+            protected void populateView(@NonNull View v, @NonNull Object model, int position) {
+                TextView productName = v.findViewById(R.id.productName);
+                TextView productSpecs = v.findViewById(R.id.productSpecs);
+                ImageView img = v.findViewById(R.id.product_image);
+                ElegantNumberButton num = v.findViewById(R.id.amount);
+                final CustomerSale cs = (CustomerSale) model;
+                productName.setText(cs.getProductname());
+                productSpecs.setText(cs.getProductspecs());
+                num.setNumber(String.valueOf(cs.getAmount()));
+                if(cs.getImage() == null){
+                    img.setImageDrawable(ContextCompat.getDrawable(cart.this, R.drawable.image));
                 }
-            };
-            myListView.setAdapter(adapter);
+                else {
+                    Glide.with(cart.this)
+                            .load(cs.getImage())
+                            .into(img);
+                }
+                Button del = v.findViewById(R.id.button2);
+                del.setOnClickListener(new View.OnClickListener() {
 
-            myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    // do nothing... yet
-                }
-            });
-            btncheckout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(adapter.getCount() == 0){
-                        Toast.makeText(cart.this, "cart is empty.", Toast.LENGTH_SHORT).show();
+                    @Override
+                    public void onClick(View arg0) {
+                        myRef.child(cs.getId()).removeValue();
                     }
-                    else{
-                        Toast.makeText(cart.this, "check out successful!", Toast.LENGTH_SHORT).show();
-                        editTextCustomerName.setText("");
-                        myListView.setAdapter(null);
-                    }
+                });
+
+            }
+        };
+        myListView.setAdapter(adapter);
+
+        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                // do nothing... yet
+            }
+        });
+        btncheckout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(adapter.getCount() == 0){
+                    Toast.makeText(cart.this, "cart is empty.", Toast.LENGTH_SHORT).show();
                 }
-            });
+                else{
+                    Toast.makeText(cart.this, "check out successful!", Toast.LENGTH_SHORT).show();
+                    editTextCustomerName.setText("");
+                    myListView.setAdapter(null);
+                }
+            }
+        });
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-            adapter.startListening();
+        adapter.startListening();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-            adapter.stopListening();
+        adapter.stopListening();
 
     }
 

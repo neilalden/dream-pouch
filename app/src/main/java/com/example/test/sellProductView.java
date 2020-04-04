@@ -29,16 +29,15 @@ import java.util.Locale;
 import java.util.Map;
 
 public class sellProductView extends AppCompatActivity {
-    String strRef, strCustomerName, strName, strSpecs, strimage, dt;
+    String strRef, strCustomerName, strName, strSpecs, strimage, dt, type, productID;
     String customerID;
-    int stck, amnt;
+    int stck, btnamnt, intsales;
     TextView tvname, tvspecs, tvstock, tvdate;
     ElegantNumberButton amount;
     Button back,cart;
     ImageView image;
     Product prd;
-    DatabaseReference mref;
-    public static String itembought;
+    DatabaseReference mref, CSref, Sref, Getref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,12 +58,15 @@ public class sellProductView extends AppCompatActivity {
         amount = findViewById(R.id.amount);
         dt = new SimpleDateFormat("MMMM dd yyyy", Locale.getDefault()).format(new Date());
         tvdate.setText(dt);
+
         mref = FirebaseDatabase.getInstance().getReference("products/"+strRef);
         mref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 try {
                     prd = dataSnapshot.getValue(Product.class);
+                    type = prd.getType();
+                    productID = prd.getId();
                     tvname.setText(prd.getName());
                     strName = prd.getName();
                     tvspecs.setText(prd.getSpecs());
@@ -90,6 +92,9 @@ public class sellProductView extends AppCompatActivity {
 
             }
         });
+
+
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,9 +105,9 @@ public class sellProductView extends AppCompatActivity {
         cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                amnt = Integer.parseInt( amount.getNumber());
+                btnamnt = Integer.parseInt( amount.getNumber());
                 try{
-                    if(amnt==0){
+                    if(btnamnt==0){
                         Toast.makeText(sellProductView.this, "no amount entered",Toast.LENGTH_SHORT).show();
                     }
                     else{
@@ -117,15 +122,22 @@ public class sellProductView extends AppCompatActivity {
 
 
     public void addtocart(){
-        try{
-            DatabaseReference CSref = FirebaseDatabase.getInstance().getReference("customerSales").child(customerID);
+        try {
+            CSref = FirebaseDatabase.getInstance().getReference("customerSales").child(customerID);
             String id = CSref.push().getKey();
-            CustomerSale cs = new CustomerSale(id,strCustomerName,strRef,strName,strSpecs,strimage,amnt,dt);
+            CustomerSale cs = new CustomerSale(id,strCustomerName,customerID,strName, strSpecs, strimage,btnamnt,dt);
             CSref.child(id).setValue(cs);
+            update(type+productID,strName+" "+strSpecs,btnamnt);
             Toast.makeText(sellProductView.this,"added to cart!", Toast.LENGTH_SHORT).show();
         }
         catch (Exception e){
-            Toast.makeText(sellProductView.this,e.getMessage(),Toast.LENGTH_LONG).show();
+            Toast.makeText(sellProductView.this, e.getMessage(),Toast.LENGTH_LONG).show();
         }
+    }
+    public void update(String updateID, String updateName, int updateSold){
+        DatabaseReference updateref = FirebaseDatabase.getInstance().getReference("sales").child(updateID);
+        Sales sls = new Sales(updateID, updateName, updateSold);
+        updateref.setValue(sls);
+
     }
 }

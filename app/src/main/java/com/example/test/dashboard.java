@@ -17,6 +17,16 @@ public class dashboard extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
         btnregister = findViewById(R.id.btn_register);
         btnsell = findViewById(R.id.btn_sell);
+        btnstats = findViewById(R.id.btn_stats);
+        btndelete = findViewById(R.id.btn_delete);
+        btndelete.setPaintFlags(btndelete.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        btnstats.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(dashboard.this, statistics.class);
+                startActivity(i);
+            }
+        });
         btnsell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -39,8 +49,6 @@ public class dashboard extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        btndelete = findViewById(R.id.btn_delete);
-        btndelete.setPaintFlags(btndelete.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
     }
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK

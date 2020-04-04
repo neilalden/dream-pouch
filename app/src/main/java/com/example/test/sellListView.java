@@ -42,6 +42,8 @@ public class sellListView extends AppCompatActivity {
         crtName = crt.customerName;
         myListView = findViewById(R.id.cartlistview);
         database = FirebaseDatabase.getInstance();
+
+
         myRef = database.getReference("products");
         mStorageRef = FirebaseStorage.getInstance().getReference("products");
         Query query = FirebaseDatabase.getInstance().getReference().child("products");
