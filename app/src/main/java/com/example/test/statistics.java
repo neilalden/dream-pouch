@@ -1,8 +1,17 @@
 package com.example.test;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
@@ -14,16 +23,30 @@ import com.anychart.enums.Anchor;
 import com.anychart.enums.HoverMode;
 import com.anychart.enums.Position;
 import com.anychart.enums.TooltipPositionMode;
+import com.bumptech.glide.Glide;
+import com.firebase.ui.database.FirebaseListAdapter;
+import com.firebase.ui.database.FirebaseListOptions;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class statistics extends AppCompatActivity {
-
+    DatabaseReference salesRef;
+    List<DataEntry> namelist;
+    TextView text;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
+        text = findViewById(R.id.sometext);
 
 
         AnyChartView anyChartView = findViewById(R.id.any_chart_view);
@@ -66,5 +89,6 @@ public class statistics extends AppCompatActivity {
         cartesian.yAxis(0).title("Products Sold");
 
         anyChartView.setChart(cartesian);
+
     }
 }

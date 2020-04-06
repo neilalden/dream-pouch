@@ -37,7 +37,7 @@ public class sellProductView extends AppCompatActivity {
     Button back,cart;
     ImageView image;
     Product prd;
-    DatabaseReference mref, CSref, Sref, Getref;
+    DatabaseReference mref, CSref, Sref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,11 +111,28 @@ public class sellProductView extends AppCompatActivity {
                         Toast.makeText(sellProductView.this, "no amount entered",Toast.LENGTH_SHORT).show();
                     }
                     else{
+                        getget();
                         addtocart();
                     }
                 }catch (Exception e){
                     Toast.makeText(sellProductView.this, e.getMessage(),Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+    }
+    public void getget(){
+        Sref = FirebaseDatabase.getInstance().getReference("sales/"+type+productID);
+        Sref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Sales s = dataSnapshot.getValue(Sales.class);
+                intsales = s.getSold();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
     }
@@ -127,7 +144,7 @@ public class sellProductView extends AppCompatActivity {
             String id = CSref.push().getKey();
             CustomerSale cs = new CustomerSale(id,strCustomerName,customerID,strName, strSpecs, strimage,btnamnt,dt);
             CSref.child(id).setValue(cs);
-            update(type+productID,strName+" "+strSpecs,btnamnt);
+            update(type+productID,strName+" "+strSpecs,btnamnt+intsales);
             Toast.makeText(sellProductView.this,"added to cart!", Toast.LENGTH_SHORT).show();
         }
         catch (Exception e){

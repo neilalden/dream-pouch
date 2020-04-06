@@ -4,12 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,28 +19,22 @@ import com.google.firebase.database.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.net.InetAddress;
+public class restockListView extends AppCompatActivity {
 
-public class home extends AppCompatActivity {
     FirebaseListAdapter adapter;
     ListView myListView;
     FirebaseDatabase database;
-    DatabaseReference myRef;
-    Product product;
     StorageReference mStorageRef;
-    public static String globalstring;
-
+    DatabaseReference myRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_restock_list_view);
 
-        isInternetAvailable();
-        product = new Product();
         myListView = findViewById(R.id.cartlistview);
         database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("products");
         mStorageRef = FirebaseStorage.getInstance().getReference("products");
+        myRef = database.getReference("products");
         Query query = FirebaseDatabase.getInstance().getReference().child("products");
         final FirebaseListOptions<Product> options = new FirebaseListOptions.Builder<Product>()
                 .setLayout(R.layout.product_info)
@@ -64,56 +54,20 @@ public class home extends AppCompatActivity {
                 id.setText(prd.getId());
                 productStock.setText("Stocks remaining: "+prd.getStocks());
                 if(prd.getImage() == null){
-                    img.setImageDrawable(ContextCompat.getDrawable(home.this, R.drawable.image));
+                    img.setImageDrawable(ContextCompat.getDrawable(restockListView.this, R.drawable.image));
                 }
                 else {
-                    Glide.with(home.this)
+                    Glide.with(restockListView.this)
                             .load(prd.getImage())
                             .into(img);
                 }
+
+
             }
         };
         myListView.setAdapter(adapter);
-
-
-
-        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(home.this, sellProductView.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                globalstring = ((TextView)view.findViewById(R.id.productId)).getText().toString();
-            }
-        });
-        Button login = findViewById(R.id.button);
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(home.this,addproduct.class);
-                startActivity(i);
-            }
-        });
     }
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            // your code        Toast.makeText(this,"test",Toast.LENGTH_SHORT);
-            return true;
-        }
 
-        return super.onKeyDown(keyCode, event);
-    }
-    public boolean isInternetAvailable() {
-        try {
-            InetAddress ipAddr = InetAddress.getByName("google.com");
-            //You can replace it with your name
-            return !ipAddr.equals("");
-
-        } catch (Exception e) {
-            return false;
-        }
-    }
     @Override
     protected void onStart() {
         super.onStart();
