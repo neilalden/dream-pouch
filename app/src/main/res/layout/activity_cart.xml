@@ -14,6 +14,15 @@
     android:focusableInTouchMode="true"
     tools:context=".cart">
 
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/bigcart" />
+
     <Button
         android:id="@+id/btn_back"
         style="@style/Widget.AppCompat.Button.Borderless"
@@ -32,6 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
+        android:fontFamily="sans-serif-condensed-light"
         android:text="date"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         app:layout_constraintEnd_toEndOf="parent"
@@ -45,8 +55,9 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:ems="10"
+        android:fontFamily="sans-serif-condensed"
         android:hint="Customer name"
-        android:inputType="textVisiblePassword|textNoSuggestions"
+        android:inputType="textVisiblePassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_back" />
@@ -57,6 +68,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:fontFamily="sans-serif-condensed-medium"
         android:text="Browse products here!"
         android:textAllCaps="false"
         android:textColor="#f788ee"
@@ -71,6 +83,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:background="#5cd65c"
+        android:fontFamily="sans-serif-condensed-medium"
         android:text="Check out"
         android:textAllCaps="false"
         android:textColor="#000"
@@ -90,5 +103,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/product_list" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

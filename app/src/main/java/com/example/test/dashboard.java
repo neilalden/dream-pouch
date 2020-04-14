@@ -57,6 +57,14 @@ public class dashboard extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        btnlogs = findViewById(R.id.btn_logs);
+        btnlogs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(dashboard.this,logs.class);
+                startActivity(i);
+            }
+        });
     }
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK

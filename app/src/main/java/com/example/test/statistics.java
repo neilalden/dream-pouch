@@ -5,8 +5,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -55,8 +57,7 @@ public class statistics extends AppCompatActivity {
         bars = new LineGraphSeries<>();
         bars.setDrawDataPoints(true);
         graphs.addSeries(bars);
-        graphs.getViewport().setMinY(1.0);
-        graphs.getViewport().setMinX(1.0);
+        graphs.getViewport().setMinY(0);
 
     }
 
@@ -93,6 +94,29 @@ public class statistics extends AppCompatActivity {
 
             }
         });
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            event.startTracking();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
+                && !event.isCanceled()) {
+            exit();
+            return true;
+        }
+        return super.onKeyUp(keyCode, event);
+    }
+    public void exit(){
+        Intent i = new Intent(statistics.this,dashboard.class);
+        startActivity(i);
+
     }
 }
 

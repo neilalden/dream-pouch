@@ -33,7 +33,7 @@ public class sellProductView extends AppCompatActivity {
     String customerID;
     int stck, btnamnt, intsales;
     TextView tvname, tvspecs, tvstock, tvdate;
-    ElegantNumberButton amount;
+    EditText amount;
     Button back,cart;
     ImageView image;
     Product prd;
@@ -105,8 +105,8 @@ public class sellProductView extends AppCompatActivity {
         cart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                btnamnt = Integer.parseInt( amount.getNumber());
                 try{
+                    btnamnt = Integer.parseInt(String.valueOf(amount.getText()));
                     if(btnamnt==0){
                         Toast.makeText(sellProductView.this, "no amount entered",Toast.LENGTH_SHORT).show();
                     }
@@ -144,7 +144,7 @@ public class sellProductView extends AppCompatActivity {
             String id = CSref.push().getKey();
             CustomerSale cs = new CustomerSale(id,strCustomerName,customerID,strName, strSpecs, strimage,btnamnt,dt);
             CSref.child(id).setValue(cs);
-            update(type+productID,strName+" "+strSpecs,btnamnt+intsales);
+            update(type+productID,strSpecs,btnamnt+intsales);
             Toast.makeText(sellProductView.this,"added to cart!", Toast.LENGTH_SHORT).show();
         }
         catch (Exception e){

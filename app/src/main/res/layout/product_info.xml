@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-condensed"
         android:text="productName"
         android:textColor="#000"
         android:textSize="15dp"
@@ -23,6 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-condensed"
         android:text="productSpecs"
         android:textColor="#000"
         android:textSize="15dp"
@@ -35,6 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-condensed"
         android:text="productStock"
         android:textColor="#000"
         android:textSize="15dp"
@@ -60,5 +63,7 @@
         android:layout_height="120dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/image" />
+        app:srcCompat="@drawable/image"
+        android:background="@color/colorPrimary"
+        android:padding="2dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

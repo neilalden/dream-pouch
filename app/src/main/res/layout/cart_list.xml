@@ -13,21 +13,6 @@
     android:layout_height="match_parent"
     android:padding="20dp">
 
-    <com.cepheuen.elegantnumberbutton.view.ElegantNumberButton
-        android:id="@+id/amount"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_weight="1"
-        app:backGroundColor="@color/colorAccent"
-        app:finalNumber="999"
-        app:initialNumber="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/product_image"
-        app:layout_constraintTop_toBottomOf="@+id/productSpecs"
-        app:textSize="10dp" />
-
     <ImageView
         android:id="@+id/product_image"
         android:layout_width="120dp"
@@ -35,7 +20,9 @@
         android:layout_marginStart="24dp"
         app:layout_constraintStart_toEndOf="@+id/button2"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/image" />
+        app:srcCompat="@drawable/image"
+        android:background="@color/colorPrimary"
+        android:padding="2dp" />
 
     <TextView
         android:id="@+id/productName"
@@ -43,6 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-condensed"
         android:text="productName"
         android:textColor="#000"
         android:textSize="15dp"
@@ -56,6 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-condensed"
         android:text="productSpecs"
         android:textColor="#000"
         android:textSize="15dp"
@@ -72,5 +61,18 @@
         android:background="@drawable/delete"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="productAmount"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/product_image"
+        app:layout_constraintTop_toBottomOf="@+id/productSpecs" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -21,6 +22,10 @@ import com.google.firebase.database.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class restockListView extends AppCompatActivity {
 
     FirebaseListAdapter adapter;
@@ -33,7 +38,9 @@ public class restockListView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restock_list_view);
-
+        TextView date = findViewById(R.id.date);
+        String sdate = new SimpleDateFormat("MMMM dd yyyy", Locale.getDefault()).format(new Date());
+        date.setText(sdate);
         myListView = findViewById(R.id.cartlistview);
         database = FirebaseDatabase.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference("products");
@@ -100,5 +107,28 @@ public class restockListView extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         adapter.stopListening();
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            event.startTracking();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
+                && !event.isCanceled()) {
+            exit();
+            return true;
+        }
+        return super.onKeyUp(keyCode, event);
+    }
+    public void exit(){
+        Intent i = new Intent(restockListView.this,dashboard.class);
+        startActivity(i);
+
     }
 }

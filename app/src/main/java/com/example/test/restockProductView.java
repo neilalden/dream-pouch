@@ -4,7 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -42,7 +44,6 @@ public class restockProductView extends AppCompatActivity {
         restockListView rlv = new restockListView();
         strRef = rlv.Rglobalstring;
 
-        tvdate =findViewById(R.id.date);
         tvname = findViewById(R.id.product_name);
         tvspecs = findViewById(R.id.product_specs);
         tvstock = findViewById(R.id.product_stocks);
@@ -50,8 +51,17 @@ public class restockProductView extends AppCompatActivity {
         back = findViewById(R.id.btn_back);
         save = findViewById(R.id.btn_to_cart);
         amount = findViewById(R.id.amount);
+        tvdate =findViewById(R.id.date);
         dt = new SimpleDateFormat("MMMM dd yyyy", Locale.getDefault()).format(new Date());
         tvdate.setText(dt);
+
+        Button btnback = findViewById(R.id.btn_back);
+        btnback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                exit();
+            }
+        });
 
 
 
@@ -99,6 +109,29 @@ public class restockProductView extends AppCompatActivity {
         Toast.makeText(restockProductView.this, String.format("%d restocked", iamount),Toast.LENGTH_SHORT).show();
         amount.setText("");
         
+
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            event.startTracking();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
+                && !event.isCanceled()) {
+            exit();
+            return true;
+        }
+        return super.onKeyUp(keyCode, event);
+    }
+    public void exit(){
+        Intent i = new Intent(restockProductView.this,restockListView.class);
+        startActivity(i);
 
     }
 }

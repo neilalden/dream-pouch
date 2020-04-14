@@ -61,6 +61,7 @@ public class cart extends AppCompatActivity {
         btnproductlist = findViewById(R.id.product_list);
         textViewDate = findViewById(R.id.date);
 
+        editTextCustomerName.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
         btnproductlist.setPaintFlags(btnproductlist.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         editTextCustomerName.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         textViewDate.setText(date);
@@ -111,11 +112,11 @@ public class cart extends AppCompatActivity {
                 TextView productName = v.findViewById(R.id.productName);
                 TextView productSpecs = v.findViewById(R.id.productSpecs);
                 ImageView img = v.findViewById(R.id.product_image);
-                ElegantNumberButton num = v.findViewById(R.id.amount);
+                TextView num = v.findViewById(R.id.amount);
                 final CustomerSale cs = (CustomerSale) model;
                 productName.setText(cs.getProductname());
                 productSpecs.setText(cs.getProductspecs());
-                num.setNumber(String.valueOf(cs.getAmount()));
+                num.setText(String.valueOf(cs.getAmount()));
                 if(cs.getImage() == null){
                     img.setImageDrawable(ContextCompat.getDrawable(cart.this, R.drawable.image));
                 }

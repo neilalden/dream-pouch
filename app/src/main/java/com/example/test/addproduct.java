@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -27,6 +28,10 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class addproduct extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
@@ -49,7 +54,17 @@ public class addproduct extends AppCompatActivity {
         mImageview = findViewById(R.id.product_image);
         mStorageRef = FirebaseStorage.getInstance().getReference("products");
         mdatabase = FirebaseDatabase.getInstance().getReference("products");
+        Button btnback = findViewById(R.id.btn_back);
+        btnback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                exit();
+            }
+        });
 
+        TextView date = findViewById(R.id.date);
+        String sdate = new SimpleDateFormat("MMMM dd yyyy", Locale.getDefault()).format(new Date());
+        date.setText(sdate);
         chooseimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -176,4 +191,26 @@ public class addproduct extends AppCompatActivity {
         }
     }
 
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            event.startTracking();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
+                && !event.isCanceled()) {
+            exit();
+            return true;
+        }
+        return super.onKeyUp(keyCode, event);
+    }
+    public void exit(){
+        Intent i = new Intent(addproduct.this,dashboard.class);
+        startActivity(i);
+
+    }
 }

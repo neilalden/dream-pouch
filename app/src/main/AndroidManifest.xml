@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".restockProductView"></activity>
+        <activity android:name=".logs"></activity>
+        <activity android:name=".restockProductView" />
         <activity android:name=".restockListView" />
         <activity android:name=".statistics" />
         <activity android:name=".sellProductView" />
