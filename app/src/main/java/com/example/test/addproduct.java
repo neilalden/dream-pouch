@@ -146,7 +146,8 @@ public class addproduct extends AppCompatActivity {
                             downloadUrl = uri.toString();
                             Product upload = new Product(id,type,name, finalSpecs, finalPrice,stocks, downloadUrl);
                             sref = FirebaseDatabase.getInstance().getReference("sales");
-
+                            Sales sales = new Sales(type+id,finalSpecs,0);
+                            sref.child(type+id).setValue(sales);
                             mdatabase.child(id).setValue(upload);
                         }
                     });

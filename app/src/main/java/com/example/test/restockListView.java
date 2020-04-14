@@ -4,8 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -26,6 +28,7 @@ public class restockListView extends AppCompatActivity {
     FirebaseDatabase database;
     StorageReference mStorageRef;
     DatabaseReference myRef;
+    public static String Rglobalstring;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +69,25 @@ public class restockListView extends AppCompatActivity {
             }
         };
         myListView.setAdapter(adapter);
+
+        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Rglobalstring = ((TextView)view.findViewById(R.id.productId)).getText().toString();
+                Intent intent = new Intent(restockListView.this, restockProductView.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+
+
+        findViewById(R.id.btn_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(restockListView.this, dashboard.class);
+                startActivity(i);
+            }
+        });
     }
 
     @Override
