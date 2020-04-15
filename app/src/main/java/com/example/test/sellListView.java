@@ -34,7 +34,7 @@ public class sellListView extends AppCompatActivity {
     DatabaseReference myRef;
     Product product;
     StorageReference mStorageRef;
-    public static String globalstring, crtName;
+    public static String globalstring, crtName, slvUltimateID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +47,7 @@ public class sellListView extends AppCompatActivity {
         date.setText(sdate);
 
         cart crt = new cart();
+        slvUltimateID = crt.ultimateID;
         crtName = crt.customerName;
         myListView = findViewById(R.id.cartlistview);
         database = FirebaseDatabase.getInstance();

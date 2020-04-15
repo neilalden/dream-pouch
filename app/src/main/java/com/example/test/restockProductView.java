@@ -76,8 +76,8 @@ public class restockProductView extends AppCompatActivity {
                     strName = prd.getName();
                     tvspecs.setText(prd.getSpecs());
                     strSpecs = prd.getSpecs();
-                    tvstock.setText("Stocks left: "+prd.getStocks());
                     getstock = prd.getStocks();
+                    tvstock.setText("Stocks left: "+getstock);
                     stck = Integer.parseInt(String.valueOf(prd.getStocks()));
                     if(prd.getImage() == null){
                         image.setImageDrawable(ContextCompat.getDrawable(restockProductView.this, R.drawable.image));
@@ -99,16 +99,16 @@ public class restockProductView extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 update();
+                amount.setText("");
             }
         });
     }
     public void update(){
         int iamount = Integer.parseInt(amount.getText().toString());
         DatabaseReference uref = FirebaseDatabase.getInstance().getReference("products/"+strRef);
-        uref.child("stocks").setValue(iamount);
+        uref.child("stocks").setValue(iamount+getstock);
         Toast.makeText(restockProductView.this, String.format("%d restocked", iamount),Toast.LENGTH_SHORT).show();
-        amount.setText("");
-        
+
 
     }
 

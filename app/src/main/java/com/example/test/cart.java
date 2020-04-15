@@ -74,6 +74,7 @@ public class cart extends AppCompatActivity {
         currentBuyer = slv.crtName;
         if(currentBuyer != null){
             editTextCustomerName.setText(currentBuyer);
+            ultimateID = slv.slvUltimateID;
         }
         btnproductlist.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,7 +85,7 @@ public class cart extends AppCompatActivity {
                     editTextCustomerName.requestFocus();
                     return;
                 }
-                else if(!customerName.isEmpty() && adapter.getCount() != 0){
+                else if(!customerName.isEmpty() && adapter.getCount() != 0 && !ultimateID.isEmpty()){
                     Intent i = new Intent(cart.this, sellListView.class);
                     startActivity(i);
                 }

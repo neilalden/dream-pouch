@@ -78,9 +78,14 @@ public class dashboard extends AppCompatActivity {
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
                 && !event.isCanceled()) {
-            System.exit(0);
+            exit();
             return true;
         }
         return super.onKeyUp(keyCode, event);
+    }
+    public void exit(){
+        Intent i = new Intent(dashboard.this,MainActivity.class);
+        startActivity(i);
+
     }
 }

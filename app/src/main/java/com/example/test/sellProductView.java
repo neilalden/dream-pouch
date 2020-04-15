@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,13 +32,13 @@ import java.util.Map;
 public class sellProductView extends AppCompatActivity {
     String strRef, strCustomerName, strName, strSpecs, strimage, dt, type, productID;
     String customerID;
-    int stck, btnamnt, intsales;
+    int btnamnt, intsales, intstocks;
     TextView tvname, tvspecs, tvstock, tvdate;
     EditText amount;
     Button back,cart;
     ImageView image;
     Product prd;
-    DatabaseReference mref, CSref, Sref;
+    DatabaseReference mref, CSref,updateref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,8 +72,8 @@ public class sellProductView extends AppCompatActivity {
                     strName = prd.getName();
                     tvspecs.setText(prd.getSpecs());
                     strSpecs = prd.getSpecs();
-                    tvstock.setText("Stocks left: "+prd.getStocks());
-                    stck = Integer.parseInt(String.valueOf(prd.getStocks()));
+                    intstocks = prd.getStocks();
+                    tvstock.setText("Stocks left: "+intstocks);
                     if(prd.getImage() == null){
                         image.setImageDrawable(ContextCompat.getDrawable(sellProductView.this, R.drawable.image));
                     }
@@ -82,8 +83,21 @@ public class sellProductView extends AppCompatActivity {
                                 .into(image);
                         strimage = prd.getImage();
                     }
+                    updateref = FirebaseDatabase.getInstance().getReference("sales").child(type+productID);
+                    updateref.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            Sales sales = dataSnapshot.getValue(Sales.class);
+                            intsales = sales.getSold();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
                 }catch (Exception e){
-                   // Toast.makeText(sellProductView.this,e.getMessage(),Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(sellProductView.this,e.getMessage(),Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -92,7 +106,6 @@ public class sellProductView extends AppCompatActivity {
 
             }
         });
-
 
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -110,8 +123,11 @@ public class sellProductView extends AppCompatActivity {
                     if(btnamnt==0){
                         Toast.makeText(sellProductView.this, "no amount entered",Toast.LENGTH_SHORT).show();
                     }
+                    else if(btnamnt > intstocks){
+                        Toast.makeText(sellProductView.this, "not enough stocks for those",Toast.LENGTH_LONG).show();
+                    }
                     else{
-                        getget();
+                        amount.setText("");
                         addtocart();
                     }
                 }catch (Exception e){
@@ -121,40 +137,53 @@ public class sellProductView extends AppCompatActivity {
         });
 
     }
-    public void getget(){
-        Sref = FirebaseDatabase.getInstance().getReference("sales/"+type+productID);
-        Sref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Sales s = dataSnapshot.getValue(Sales.class);
-                intsales = s.getSold();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-
     public void addtocart(){
         try {
             CSref = FirebaseDatabase.getInstance().getReference("customerSales").child(customerID);
             String id = CSref.push().getKey();
             CustomerSale cs = new CustomerSale(id,strCustomerName,customerID,strName, strSpecs, strimage,btnamnt,dt);
             CSref.child(id).setValue(cs);
-            update(type+productID,strSpecs,btnamnt+intsales);
-            Toast.makeText(sellProductView.this,"added to cart!", Toast.LENGTH_SHORT).show();
+
+            DatabaseReference stockupdate = FirebaseDatabase.getInstance().getReference("products/"+productID);
+            stockupdate.child("stocks").setValue(intstocks-btnamnt);
+
+            update(type+productID,type,intsales+btnamnt);
         }
         catch (Exception e){
             Toast.makeText(sellProductView.this, e.getMessage(),Toast.LENGTH_LONG).show();
         }
     }
     public void update(String updateID, String updateName, int updateSold){
-        DatabaseReference updateref = FirebaseDatabase.getInstance().getReference("sales").child(updateID);
         Sales sls = new Sales(updateID, updateName, updateSold);
         updateref.setValue(sls);
+        Toast.makeText(sellProductView.this,"added to cart!", Toast.LENGTH_SHORT).show();
+
+    }
+
+
+
+
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            event.startTracking();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.isTracking()
+                && !event.isCanceled()) {
+            exit();
+            return true;
+        }
+        return super.onKeyUp(keyCode, event);
+    }
+    public void exit(){
+        Intent i = new Intent(sellProductView.this,sellListView.class);
+        startActivity(i);
 
     }
 }
