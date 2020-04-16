@@ -36,23 +36,23 @@ import java.util.Locale;
 
 public class cart extends AppCompatActivity {
     public static String ultimateID,customerName;
-    String date, mrefID, currentBuyer;
+    String date, mrefID, currentBuyer, slvID;
     Button btnback,btnproductlist, btncheckout;
     EditText editTextCustomerName;
     TextView textViewDate;
     FirebaseListAdapter adapter;
     ListView myListView;
-    FirebaseDatabase database;
+
     DatabaseReference myRef;
     StorageReference mStorageRef;
+    sellListView slv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
-        sellListView slv = new sellListView();
+        slv = new sellListView();
         myRef = FirebaseDatabase.getInstance().getReference();
         myListView = findViewById(R.id.cartlistview);
-        database = FirebaseDatabase.getInstance();
         date = new SimpleDateFormat("MMMM dd yyyy", Locale.getDefault()).format(new Date());
 
         btncheckout = findViewById(R.id.btn_checkout);
@@ -63,7 +63,6 @@ public class cart extends AppCompatActivity {
 
         editTextCustomerName.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
         btnproductlist.setPaintFlags(btnproductlist.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        editTextCustomerName.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         textViewDate.setText(date);
         btnback.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,36 +70,45 @@ public class cart extends AppCompatActivity {
                 exit();
             }
         });
+        // current buyer is for checking if someone already entered SLV
+        //and if there is, then there's already a firebase id, ill call it slvID
+        // always consider customerName
         currentBuyer = slv.crtName;
+        slvID = slv.slvUltimateID;
         if(currentBuyer != null){
             editTextCustomerName.setText(currentBuyer);
             ultimateID = slv.slvUltimateID;
+            customerName = currentBuyer;
         }
         btnproductlist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                customerName = editTextCustomerName.getText().toString();
-                if (customerName.isEmpty()){
-                    editTextCustomerName.setError("name is required");
-                    editTextCustomerName.requestFocus();
-                    return;
-                }
-                else if(!customerName.isEmpty() && adapter.getCount() != 0 && !ultimateID.isEmpty()){
-                    Intent i = new Intent(cart.this, sellListView.class);
-                    startActivity(i);
-                }
-                if(!customerName.isEmpty() && ultimateID != ""){
-                    mrefID = myRef.push().getKey();
-                    String nospacename = customerName.replaceAll("\\s","-");
-                    String nospacedate = date.replaceAll("\\s","-");
-                    ultimateID = nospacename+""+nospacedate+mrefID;
-                    Intent i = new Intent(cart.this, sellListView.class);
-                    startActivity(i);
+                try{
+                    customerName = editTextCustomerName.getText().toString();
+                    if (customerName.isEmpty()){
+                        editTextCustomerName.setError("name is required");
+                        editTextCustomerName.requestFocus();
+                        return;
+                    }
+                    else if(!customerName.isEmpty() && adapter.getCount() != 0 && !ultimateID.isEmpty()){
+                        Intent i = new Intent(cart.this, sellListView.class);
+                        startActivity(i);
+                    }
+                    else if(!customerName.isEmpty() && ultimateID != ""){
+                        mrefID = myRef.push().getKey();
+                        String nospacename = customerName.replaceAll("\\s","-");
+                        String nospacedate = date.replaceAll("\\s","-");
+                        ultimateID = nospacename+""+nospacedate+mrefID;
+                        Intent i = new Intent(cart.this, sellListView.class);
+                        startActivity(i);
+                    }
+                }catch (Exception e){
+                    Toast.makeText(cart.this,e.getMessage(),Toast.LENGTH_LONG).show();
                 }
             }
         });
 
-        myRef = database.getReference("customerSales/"+ultimateID);
+        myRef = FirebaseDatabase.getInstance().getReference("customerSales/"+ultimateID);
         mStorageRef = FirebaseStorage.getInstance().getReference("products");
         Query query = FirebaseDatabase.getInstance().getReference().child("customerSales/"+ultimateID);
         FirebaseListOptions<CustomerSale> options = new FirebaseListOptions.Builder<CustomerSale>()
@@ -154,6 +162,7 @@ public class cart extends AppCompatActivity {
                 else{
                     Toast.makeText(cart.this, "check out successful!", Toast.LENGTH_SHORT).show();
                     editTextCustomerName.setText("");
+                    ultimateID = "";
                     myListView.setAdapter(null);
                 }
             }

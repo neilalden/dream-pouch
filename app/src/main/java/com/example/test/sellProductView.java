@@ -147,7 +147,7 @@ public class sellProductView extends AppCompatActivity {
             DatabaseReference stockupdate = FirebaseDatabase.getInstance().getReference("products/"+productID);
             stockupdate.child("stocks").setValue(intstocks-btnamnt);
 
-            update(type+productID,type,intsales+btnamnt);
+            update(type+productID,strSpecs,intsales+btnamnt);
         }
         catch (Exception e){
             Toast.makeText(sellProductView.this, e.getMessage(),Toast.LENGTH_LONG).show();
