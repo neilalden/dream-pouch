@@ -41,9 +41,10 @@ public class restockListView extends AppCompatActivity {
         TextView date = findViewById(R.id.date);
         String sdate = new SimpleDateFormat("MMMM dd yyyy", Locale.getDefault()).format(new Date());
         date.setText(sdate);
+        mStorageRef = FirebaseStorage.getInstance().getReference("products");
+
         myListView = findViewById(R.id.cartlistview);
         database = FirebaseDatabase.getInstance();
-        mStorageRef = FirebaseStorage.getInstance().getReference("products");
         myRef = database.getReference("products");
         Query query = FirebaseDatabase.getInstance().getReference().child("products");
         final FirebaseListOptions<Product> options = new FirebaseListOptions.Builder<Product>()

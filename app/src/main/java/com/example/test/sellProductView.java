@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,6 +41,7 @@ public class sellProductView extends AppCompatActivity {
     ImageView image;
     Product prd;
     DatabaseReference mref, CSref,updateref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +62,6 @@ public class sellProductView extends AppCompatActivity {
         amount = findViewById(R.id.amount);
         dt = new SimpleDateFormat("MMMM dd yyyy", Locale.getDefault()).format(new Date());
         tvdate.setText(dt);
-
         mref = FirebaseDatabase.getInstance().getReference("products/"+strRef);
         mref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -69,7 +71,7 @@ public class sellProductView extends AppCompatActivity {
                     type = prd.getType();
                     productID = prd.getId();
                     tvname.setText(prd.getName());
-                    strName = prd.getName();
+                    strName = prd.getType();
                     tvspecs.setText(prd.getSpecs());
                     strSpecs = prd.getSpecs();
                     intstocks = prd.getStocks();
@@ -141,12 +143,11 @@ public class sellProductView extends AppCompatActivity {
         try {
             CSref = FirebaseDatabase.getInstance().getReference("customerSales").child(customerID);
             String id = CSref.push().getKey();
-            CustomerSale cs = new CustomerSale(id,strCustomerName,customerID,strName, strSpecs, strimage,btnamnt,dt);
+            CustomerSale cs = new CustomerSale(id,strCustomerName,productID,strName, strSpecs, strimage,btnamnt,dt);
             CSref.child(id).setValue(cs);
 
             DatabaseReference stockupdate = FirebaseDatabase.getInstance().getReference("products/"+productID);
             stockupdate.child("stocks").setValue(intstocks-btnamnt);
-
             update(type+productID,strSpecs,intsales+btnamnt);
         }
         catch (Exception e){

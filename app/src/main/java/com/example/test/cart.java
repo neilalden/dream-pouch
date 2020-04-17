@@ -24,25 +24,36 @@ import com.bumptech.glide.Glide;
 import com.cepheuen.elegantnumberbutton.view.ElegantNumberButton;
 import com.firebase.ui.database.FirebaseListAdapter;
 import com.firebase.ui.database.FirebaseListOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 public class cart extends AppCompatActivity {
     public static String ultimateID,customerName;
-    String date, mrefID, currentBuyer, slvID;
+    String date, mrefID, currentBuyer, slvID, prodid, prodtype;
+    int prodamnt, currentamount, intsales;
     Button btnback,btnproductlist, btncheckout;
     EditText editTextCustomerName;
     TextView textViewDate;
     FirebaseListAdapter adapter;
     ListView myListView;
+    HashMap<String, Integer> Hlogs = new HashMap<String, Integer>();
 
+    FirebaseUser fbuser;
     DatabaseReference myRef;
     StorageReference mStorageRef;
     sellListView slv;
@@ -98,7 +109,7 @@ public class cart extends AppCompatActivity {
                         mrefID = myRef.push().getKey();
                         String nospacename = customerName.replaceAll("\\s","-");
                         String nospacedate = date.replaceAll("\\s","-");
-                        ultimateID = nospacename+""+nospacedate+mrefID;
+                        ultimateID = nospacename+"-"+nospacedate+mrefID;
                         Intent i = new Intent(cart.this, sellListView.class);
                         startActivity(i);
                     }
@@ -108,6 +119,7 @@ public class cart extends AppCompatActivity {
             }
         });
 
+        fbuser = FirebaseAuth.getInstance().getCurrentUser();
         myRef = FirebaseDatabase.getInstance().getReference("customerSales/"+ultimateID);
         mStorageRef = FirebaseStorage.getInstance().getReference("products");
         Query query = FirebaseDatabase.getInstance().getReference().child("customerSales/"+ultimateID);
@@ -123,9 +135,13 @@ public class cart extends AppCompatActivity {
                 ImageView img = v.findViewById(R.id.product_image);
                 TextView num = v.findViewById(R.id.amount);
                 final CustomerSale cs = (CustomerSale) model;
-                productName.setText(cs.getProductname());
+                prodamnt = cs.getAmount();
+                prodtype = cs.getProductname();
+                prodid =cs.getProductid();
+                Hlogs.put(cs.getProductspecs(),prodamnt);
+                productName.setText(prodtype);
                 productSpecs.setText(cs.getProductspecs());
-                num.setText(String.valueOf(cs.getAmount()));
+                num.setText(String.valueOf(prodamnt));
                 if(cs.getImage() == null){
                     img.setImageDrawable(ContextCompat.getDrawable(cart.this, R.drawable.image));
                 }
@@ -134,12 +150,42 @@ public class cart extends AppCompatActivity {
                             .load(cs.getImage())
                             .into(img);
                 }
+                DatabaseReference prodref = FirebaseDatabase.getInstance().getReference("products").child(prodid);
+                prodref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Product product = dataSnapshot.getValue(Product.class);
+                        currentamount = product.getStocks();
+                        DatabaseReference updateref = FirebaseDatabase.getInstance().getReference("sales").child(prodtype+prodid);
+                        updateref.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Sales sales = dataSnapshot.getValue(Sales.class);
+                                intsales = sales.getSold();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
                 Button del = v.findViewById(R.id.button2);
                 del.setOnClickListener(new View.OnClickListener() {
 
                     @Override
                     public void onClick(View arg0) {
                         myRef.child(cs.getId()).removeValue();
+                        DatabaseReference sref = FirebaseDatabase.getInstance().getReference("sales").child(prodtype+prodid);
+                        DatabaseReference pref = FirebaseDatabase.getInstance().getReference("products").child(prodid);
+                        pref.child("stocks").setValue(prodamnt+currentamount);
+                        sref.child("sold").setValue(intsales-prodamnt);
                     }
                 });
 
@@ -160,6 +206,16 @@ public class cart extends AppCompatActivity {
                     Toast.makeText(cart.this, "cart is empty.", Toast.LENGTH_SHORT).show();
                 }
                 else{
+
+                    DatabaseReference logref = FirebaseDatabase.getInstance().getReference("logs");
+                    String user = fbuser.getEmail();
+                    String x = "";
+
+                    for (String i : Hlogs.keySet()) {
+                        x += i+" " + Hlogs.get(i)+" ";
+                    }
+                    Log lg = new Log(ultimateID,user,date,x+ "sold to "+customerName);
+                    logref.child(ultimateID).setValue(lg);
                     Toast.makeText(cart.this, "check out successful!", Toast.LENGTH_SHORT).show();
                     editTextCustomerName.setText("");
                     ultimateID = "";
@@ -202,6 +258,7 @@ public class cart extends AppCompatActivity {
     public void exit(){
         Intent i = new Intent(cart.this,dashboard.class);
         startActivity(i);
-
+        ultimateID ="";
+        editTextCustomerName.setText("");
     }
 }
